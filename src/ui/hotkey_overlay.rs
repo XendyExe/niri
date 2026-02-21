@@ -214,6 +214,8 @@ fn collect_actions(config: &Config) -> Vec<&Action> {
         &Action::CloseWindow,
         &Action::FocusColumnLeft,
         &Action::FocusColumnRight,
+        &Action::ScrollColumnRightUnderMouse,
+        &Action::ScrollColumnLeftUnderMouse,
         &Action::MoveColumnLeft,
         &Action::MoveColumnRight,
         &Action::FocusWorkspaceDown,

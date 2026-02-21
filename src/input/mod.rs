@@ -1069,7 +1069,7 @@ impl State {
                 // FIXME: granular
                 self.niri.queue_redraw_all();
             }
-            Action::FocusColumnLeftUnderMouse => {
+            Action::ScrollColumnLeftUnderMouse | Action::FocusColumnLeftUnderMouse => {
                 if let Some((output, ws)) = self.niri.workspace_under_cursor(true) {
                     let ws_id = ws.id();
                     let ws = {
@@ -1077,7 +1077,6 @@ impl State {
                         workspaces.find(|ws| ws.id() == ws_id).unwrap()
                     };
                     ws.focus_left();
-                    self.maybe_warp_cursor_to_focus();
                     self.niri.layer_shell_on_demand_focus = None;
                     self.niri.queue_redraw(&output);
                 }
@@ -1089,7 +1088,7 @@ impl State {
                 // FIXME: granular
                 self.niri.queue_redraw_all();
             }
-            Action::FocusColumnRightUnderMouse => {
+            Action::ScrollColumnRightUnderMouse | Action::FocusColumnRightUnderMouse => {
                 if let Some((output, ws)) = self.niri.workspace_under_cursor(true) {
                     let ws_id = ws.id();
                     let ws = {
@@ -1097,7 +1096,6 @@ impl State {
                         workspaces.find(|ws| ws.id() == ws_id).unwrap()
                     };
                     ws.focus_right();
-                    self.maybe_warp_cursor_to_focus();
                     self.niri.layer_shell_on_demand_focus = None;
                     self.niri.queue_redraw(&output);
                 }
@@ -3196,8 +3194,7 @@ impl State {
                 let vertical = vertical_amount_v120.unwrap_or(0.);
                 let ticks = self.niri.vertical_wheel_tracker.accumulate(vertical);
                 if ticks != 0 {
-                    let (bind_up, bind_down) = if should_handle_in_overview && modifiers.is_empty()
-                    {
+                    let (bind_up, bind_down) = if should_handle_in_overview && modifiers.is_empty() {
                         let bind_up = Some(Bind {
                             key: Key {
                                 trigger: Trigger::WheelScrollUp,
@@ -3223,7 +3220,8 @@ impl State {
                             hotkey_overlay_title: None,
                         });
                         (bind_up, bind_down)
-                    } else if should_handle_in_overview && modifiers == Modifiers::SHIFT {
+                    }
+                    else if should_handle_in_overview && modifiers == Modifiers::SHIFT {
                         let bind_up = Some(Bind {
                             key: Key {
                                 trigger: Trigger::WheelScrollUp,
@@ -3249,7 +3247,8 @@ impl State {
                             hotkey_overlay_title: None,
                         });
                         (bind_up, bind_down)
-                    } else {
+                    }
+                    else {
                         let config = self.niri.config.borrow();
                         let bindings =
                             make_binds_iter(&config, &mut self.niri.window_mru_ui, modifiers);

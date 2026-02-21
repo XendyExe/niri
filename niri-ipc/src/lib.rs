@@ -192,6 +192,10 @@ pub struct PickedColor {
 #[cfg_attr(feature = "clap", command(subcommand_help_heading = "Actions"))]
 #[cfg_attr(feature = "json-schema", derive(schemars::JsonSchema))]
 pub enum Action {
+    /// Focus the column the cursor is in to the right.
+    ScrollColumnRightUnderMouse {},
+    /// Scrolls the column the cursor is in to the left.
+    ScrollColumnLeftUnderMouse {},
     /// Exit niri.
     Quit {
         /// Skip the "Press Enter to confirm" prompt.

@@ -99,6 +99,8 @@ pub struct SwitchAction {
 // Remember to add new actions to the CLI enum too.
 #[derive(knuffel::Decode, Debug, Clone, PartialEq)]
 pub enum Action {
+    ScrollColumnRightUnderMouse,
+    ScrollColumnLeftUnderMouse,
     Quit(#[knuffel(property(name = "skip-confirmation"), default)] bool),
     #[knuffel(skip)]
     ChangeVt(i32),
@@ -394,6 +396,8 @@ pub enum Action {
 impl From<niri_ipc::Action> for Action {
     fn from(value: niri_ipc::Action) -> Self {
         match value {
+            niri_ipc::Action::ScrollColumnRightUnderMouse {} => Self::ScrollColumnRightUnderMouse,
+            niri_ipc::Action::ScrollColumnLeftUnderMouse {} => Self::ScrollColumnLeftUnderMouse,
             niri_ipc::Action::Quit { skip_confirmation } => Self::Quit(skip_confirmation),
             niri_ipc::Action::PowerOffMonitors {} => Self::PowerOffMonitors,
             niri_ipc::Action::PowerOnMonitors {} => Self::PowerOnMonitors,
