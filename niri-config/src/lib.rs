@@ -72,6 +72,7 @@ pub struct Config {
     pub spawn_sh_at_startup: Vec<SpawnShAtStartup>,
     pub layout: Layout,
     pub prefer_no_csd: bool,
+    pub do_unfocused_monitor_actions: bool,
     pub cursor: Cursor,
     pub screenshot_path: ScreenshotPath,
     pub clipboard: Clipboard,
@@ -232,6 +233,10 @@ where
 
                 "prefer-no-csd" => {
                     config.borrow_mut().prefer_no_csd = Flag::decode_node(node, ctx)?.0
+                }
+
+                "do-unfocused-monitor-actions" => {
+                    config.borrow_mut().do_unfocused_monitor_actions = Flag::decode_node(node, ctx)?.0
                 }
 
                 "screenshot-path" => {

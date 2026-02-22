@@ -196,6 +196,10 @@ pub enum Action {
     ScrollColumnRightUnderMouse {},
     /// Scrolls the column the cursor is in to the left.
     ScrollColumnLeftUnderMouse {},
+    /// Scrolls the workspace the cursor is in upwards.
+    ScrollUpUnderMouse {},
+    /// Scrolls the workspace the cursor is in downwards.
+    ScrollDownUnderMouse {},
     /// Exit niri.
     Quit {
         /// Skip the "Press Enter to confirm" prompt.

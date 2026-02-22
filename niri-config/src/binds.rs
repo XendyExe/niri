@@ -101,6 +101,8 @@ pub struct SwitchAction {
 pub enum Action {
     ScrollColumnRightUnderMouse,
     ScrollColumnLeftUnderMouse,
+    ScrollUpUnderMouse,
+    ScrollDownUnderMouse,
     Quit(#[knuffel(property(name = "skip-confirmation"), default)] bool),
     #[knuffel(skip)]
     ChangeVt(i32),
@@ -398,6 +400,8 @@ impl From<niri_ipc::Action> for Action {
         match value {
             niri_ipc::Action::ScrollColumnRightUnderMouse {} => Self::ScrollColumnRightUnderMouse,
             niri_ipc::Action::ScrollColumnLeftUnderMouse {} => Self::ScrollColumnLeftUnderMouse,
+            niri_ipc::Action::ScrollUpUnderMouse {} => Self::ScrollUpUnderMouse,
+            niri_ipc::Action::ScrollDownUnderMouse {} => Self::ScrollDownUnderMouse,
             niri_ipc::Action::Quit { skip_confirmation } => Self::Quit(skip_confirmation),
             niri_ipc::Action::PowerOffMonitors {} => Self::PowerOffMonitors,
             niri_ipc::Action::PowerOnMonitors {} => Self::PowerOnMonitors,

@@ -1452,7 +1452,7 @@ impl State {
                 // FIXME: granular
                 self.niri.queue_redraw_all();
             }
-            Action::FocusWorkspaceDownUnderMouse => {
+            Action::ScrollDownUnderMouse |  Action::FocusWorkspaceDownUnderMouse => {
                 if let Some(output) = self.niri.output_under_cursor() {
                     if let Some(mon) = self.niri.layout.monitor_for_output_mut(&output) {
                         mon.switch_workspace_down();
@@ -1469,7 +1469,7 @@ impl State {
                 // FIXME: granular
                 self.niri.queue_redraw_all();
             }
-            Action::FocusWorkspaceUpUnderMouse => {
+            Action::ScrollUpUnderMouse | Action::FocusWorkspaceUpUnderMouse => {
                 if let Some(output) = self.niri.output_under_cursor() {
                     if let Some(mon) = self.niri.layout.monitor_for_output_mut(&output) {
                         mon.switch_workspace_up();
@@ -1595,10 +1595,12 @@ impl State {
                 self.niri.queue_redraw_all();
             }
             Action::SwitchPresetColumnWidth => {
-                self.niri.layout.toggle_width(true);
+                let Some(workspace) = self.get_correct_action_workspace() else { return; };
+                workspace.toggle_width(true);
             }
             Action::SwitchPresetColumnWidthBack => {
-                self.niri.layout.toggle_width(false);
+                let Some(workspace) = self.get_correct_action_workspace() else { return; };
+                workspace.toggle_width(false);
             }
             Action::SwitchPresetWindowWidth => {
                 self.niri.layout.toggle_window_width(None, true);
@@ -1665,7 +1667,8 @@ impl State {
                 self.niri.queue_redraw_all();
             }
             Action::MaximizeColumn => {
-                self.niri.layout.toggle_full_width();
+                let Some(workspace) = self.get_correct_action_workspace() else { return; };
+                workspace.toggle_full_width();
             }
             Action::MaximizeWindowToEdges => {
                 let focus = self.niri.layout.focus().map(|m| m.window.clone());

@@ -993,6 +993,27 @@ impl State {
         }
     }
 
+    pub fn get_correct_action_workspace(&mut self) -> Option<&mut Workspace<Mapped>> {
+        if self.niri.config.borrow().do_unfocused_monitor_actions  {
+            let Some(active_workspace) = self.niri.layout.active_workspace() else { return None; };
+            let active_workspace_id = active_workspace.id().get();
+
+            let Some((_, workspace)) = self.niri.workspace_under_cursor(true) else { return None; };
+            let cursor_workspace_id = workspace.id().get();
+
+            return if cursor_workspace_id == active_workspace_id {
+                self.niri.layout.active_workspace_mut()
+            } else {
+                let Some(window) = self.niri.window_under_cursor() else { return None; };
+                let wayland_window_ref = window.window.clone();
+                let Some(mutable_workspace) = self.niri.layout.workspaces_mut().find(|w| w.id().get() == cursor_workspace_id) else { return None; };
+                mutable_workspace.activate_window(&wayland_window_ref);
+                Some(mutable_workspace)
+            }
+        }
+        self.niri.layout.active_workspace_mut()
+    }
+
     pub fn maybe_warp_cursor_to_focus(&mut self) -> bool {
         let focused = match self.niri.config.borrow().input.warp_mouse_to_focus {
             None => return false,

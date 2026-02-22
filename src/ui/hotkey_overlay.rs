@@ -216,6 +216,8 @@ fn collect_actions(config: &Config) -> Vec<&Action> {
         &Action::FocusColumnRight,
         &Action::ScrollColumnRightUnderMouse,
         &Action::ScrollColumnLeftUnderMouse,
+        &Action::ScrollUpUnderMouse,
+        &Action::ScrollDownUnderMouse,
         &Action::MoveColumnLeft,
         &Action::MoveColumnRight,
         &Action::FocusWorkspaceDown,
@@ -491,6 +493,10 @@ fn action_name(action: &Action) -> String {
             // Fairly crude but should get the job done in most cases.
             command.split_ascii_whitespace().next().unwrap_or("")
         ),
+        Action::ScrollColumnLeftUnderMouse => String::from("Scroll Column to the Left in the Hovered Workspace"),
+        Action::ScrollColumnRightUnderMouse => String::from("Scroll Column to the Right in the Hovered Workspace"),
+        Action::ScrollUpUnderMouse => String::from("Scroll Workspace Up in the Hovered Workspace"),
+        Action::ScrollDownUnderMouse => String::from("Scroll Workspace Down in the Hovered Workspace"),
         _ => String::from("FIXME: Unknown"),
     }
 }
