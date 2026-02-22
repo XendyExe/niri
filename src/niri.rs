@@ -749,6 +749,12 @@ impl State {
         Ok(state)
     }
 
+    pub fn maybe_get_mouse_workspace_id(&mut self) -> Option<WorkspaceId> {
+        if !self.niri.config.borrow().spawn_windows_on_mouse { return None; }
+        let Some((_, workspace)) = self.niri.workspace_under_cursor(true) else { return None; };
+        Some(workspace.id())
+    }
+
     pub fn refresh_and_flush_clients(&mut self) {
         let _span = tracy_client::span!("State::refresh_and_flush_clients");
 

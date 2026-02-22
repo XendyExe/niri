@@ -902,7 +902,9 @@ impl<W: LayoutElement> Layout<W> {
                 ..
             } => {
                 let (mon_idx, target) = match target {
-                    AddWindowTarget::Auto => (*active_monitor_idx, MonitorAddWindowTarget::Auto),
+                    AddWindowTarget::Auto => {
+                        (*active_monitor_idx, MonitorAddWindowTarget::Auto)
+                    },
                     AddWindowTarget::Output(output) => {
                         let mon_idx = monitors
                             .iter()
@@ -916,7 +918,6 @@ impl<W: LayoutElement> Layout<W> {
                             .iter()
                             .position(|mon| mon.workspaces.iter().any(|ws| ws.id() == ws_id))
                             .unwrap();
-
                         (
                             mon_idx,
                             MonitorAddWindowTarget::Workspace {

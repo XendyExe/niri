@@ -73,6 +73,7 @@ pub struct Config {
     pub layout: Layout,
     pub prefer_no_csd: bool,
     pub do_unfocused_monitor_actions: bool,
+    pub spawn_windows_on_mouse: bool,
     pub cursor: Cursor,
     pub screenshot_path: ScreenshotPath,
     pub clipboard: Clipboard,
@@ -237,6 +238,10 @@ where
 
                 "do-unfocused-monitor-actions" => {
                     config.borrow_mut().do_unfocused_monitor_actions = Flag::decode_node(node, ctx)?.0
+                }
+
+                "spawn-windows-on-mouse" => {
+                    config.borrow_mut().spawn_windows_on_mouse = Flag::decode_node(node, ctx)?.0
                 }
 
                 "screenshot-path" => {

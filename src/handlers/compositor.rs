@@ -201,6 +201,8 @@ impl CompositorHandler for State {
                     let target = if let Some(p) = &parent {
                         // Open dialogs next to their parent window.
                         AddWindowTarget::NextTo(p)
+                    } else if let Some(id) = self.maybe_get_mouse_workspace_id() {
+                        AddWindowTarget::Workspace(id)
                     } else if let Some(id) = workspace_id {
                         AddWindowTarget::Workspace(id)
                     } else if let Some(output) = &output {
@@ -208,15 +210,17 @@ impl CompositorHandler for State {
                     } else {
                         AddWindowTarget::Auto
                     };
+
+
                     let output = self.niri.layout.add_window(
-                        mapped,
-                        target,
-                        width,
-                        height,
-                        is_full_width,
-                        is_floating,
-                        activate,
-                    );
+                            mapped,
+                            target,
+                            width,
+                            height,
+                            is_full_width,
+                            is_floating,
+                            activate,
+                        );
                     let output = output.cloned();
 
                     // The window state cannot contain Fullscreen and Maximized at once. Therefore,
