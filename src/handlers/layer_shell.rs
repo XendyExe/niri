@@ -28,6 +28,8 @@ impl WlrLayerShellHandler for State {
     ) {
         let output = if let Some(wl_output) = &wl_output {
             Output::from_resource(wl_output)
+        } else if let Some(output) = self.try_get_mouse_output() {
+            Some(output)
         } else {
             self.niri.layout.active_output().cloned()
         };
@@ -44,6 +46,10 @@ impl WlrLayerShellHandler for State {
         let mut map = layer_map_for_output(&output);
         map.map_layer(&LayerSurface::new(surface, namespace))
             .unwrap();
+    }
+
+    fn new_popup(&mut self, _parent: WlrLayerSurface, popup: PopupSurface) {
+        self.unconstrain_popup(&PopupKind::Xdg(popup));
     }
 
     fn layer_destroyed(&mut self, surface: WlrLayerSurface) {
@@ -68,10 +74,6 @@ impl WlrLayerShellHandler for State {
         if let Some(output) = output {
             self.niri.output_resized(&output);
         }
-    }
-
-    fn new_popup(&mut self, _parent: WlrLayerSurface, popup: PopupSurface) {
-        self.unconstrain_popup(&PopupKind::Xdg(popup));
     }
 }
 delegate_layer_shell!(State);

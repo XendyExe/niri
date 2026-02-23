@@ -755,6 +755,13 @@ impl State {
         Some(workspace.id())
     }
 
+    pub fn try_get_mouse_output(&mut self) -> Option<Output> {
+        if !self.niri.config.borrow().spawn_layer_shells_on_mouse { return None; };
+        let Some((output, _)) = self.niri.workspace_under_cursor(true) else { return None; };
+        self.niri.layout.focus_output(&output);
+        Some(output.clone())
+    }
+
     pub fn refresh_and_flush_clients(&mut self) {
         let _span = tracy_client::span!("State::refresh_and_flush_clients");
 
